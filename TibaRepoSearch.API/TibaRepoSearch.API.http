@@ -1,0 +1,32 @@
+@TibaRepoSearch.API_HostAddress = http://localhost:5157
+
+# Search repositories
+GET {{TibaRepoSearch.API_HostAddress}}/api/search?q=angular
+Accept: application/json
+
+###
+
+# Get favorites
+GET {{TibaRepoSearch.API_HostAddress}}/api/favorites
+Accept: application/json
+
+###
+
+# Add to favorites
+POST {{TibaRepoSearch.API_HostAddress}}/api/favorites
+Content-Type: application/json
+
+{
+  "repoId": "1",
+  "name": "angular",
+  "owner": "angular",
+  "stars": 95000,
+  "updatedAt": "2024-01-15T10:00:00Z"
+}
+
+###
+
+# Delete from favorites
+DELETE {{TibaRepoSearch.API_HostAddress}}/api/favorites/1
+
+###

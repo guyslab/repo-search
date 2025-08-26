@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TibaRepoSearch.API", "TibaRepoSearch.API\TibaRepoSearch.API.csproj", "{993EBE2E-2AF1-471A-92FC-28C401935E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TibaRepoSearch.Contract", "TibaRepoSearch.Contract\TibaRepoSearch.Contract.csproj", "{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Debug|x64.Build.0 = Debug|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Debug|x86.Build.0 = Debug|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Release|x64.ActiveCfg = Release|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Release|x64.Build.0 = Release|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Release|x86.ActiveCfg = Release|Any CPU
+		{993EBE2E-2AF1-471A-92FC-28C401935E44}.Release|x86.Build.0 = Release|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Debug|x64.Build.0 = Debug|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Debug|x86.Build.0 = Debug|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Release|x64.ActiveCfg = Release|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Release|x64.Build.0 = Release|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{D4B3F2D9-ECF5-4381-B7A3-88F0C46A7B2C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30898CBA-ED01-4C08-B0A1-2A1538803204}
+	EndGlobalSection
+EndGlobal
