@@ -12,4 +12,5 @@ The goal of this project is to create a web application that allows users to sea
 
 ## Design Decisions
 1. Command pattern for use cases, for easier business logic invocation
+2. Contract project/package for interfaces and models
 

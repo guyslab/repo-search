@@ -1,33 +1,49 @@
 ﻿
+using TibaRepoSearch.Contract;
+
 namespace TibaRepoSearch;
 
 internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
     {
-        services.AddTransient<IRepositorySearchUseCase>(_ => new RepositorySearchUseCase());
+        services.AddTransient<IRepositorySearchUseCase, RepositorySearchUseCase>();
         services.AddTransient<IAddToFavoritesUseCase>(_ => new AddToFavoritesUseCase());
         services.AddTransient<IFetchRepositoryAnalysisUseCase>(_ => new FetchRepositoryAnalysisUseCase());
         services.AddTransient<IListUserFavoritesUseCase>(_ => new ListUserFavoritesUseCase());
         services.AddTransient<IRemoveUserFavoriteUseCase>(_ => new RemoveUserFavoriteUseCase());
         return services;
     }
-    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services)
     {
-        // Register infrastructure layer services here, using configuration if needed
+        services.AddHttpClient<IGithubClient, GitHubClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.github.com/");
+            client.DefaultRequestHeaders.Add("User-Agent", "TibaRepoSearch");
+        });
         return services;
     }
 }
 
 internal class RepositorySearchUseCase : IRepositorySearchUseCase
 {
-    public Task<IEnumerable<Repository>> SearchAsync(string query)
+    private readonly IGithubClient _githubClient;
+
+    public RepositorySearchUseCase(IGithubClient githubClient)
     {
-        var repositories = new List<Repository>
-        {
-            new Repository("angular", "angular", 95000, DateTime.UtcNow.AddDays(-1), "The modern web developer's platform", "1")
-        };
-        return Task.FromResult(repositories.Where(r => r.Name.Contains(query, StringComparison.OrdinalIgnoreCase)));
+        _githubClient = githubClient;
+    }
+
+    public async Task<IEnumerable<Repository>> SearchAsync(string query)
+    {
+        var response = await _githubClient.SearchRepositoriesAsync(query);
+        return response.Items.Select(repo => new Repository(
+            repo.Name,
+            repo.Owner.Login,
+            repo.StargazersCount,
+            repo.UpdatedAt,
+            repo.Description ?? string.Empty,
+            repo.Id.ToString()));
     }
 }
 
@@ -60,5 +76,21 @@ internal class RemoveUserFavoriteUseCase : IRemoveUserFavoriteUseCase
     public Task RemoveAsync(string repoId, string userId)
     {
         return Task.CompletedTask;
+    }
+}
+
+internal class GitHubClient : IGithubClient
+{
+    private readonly HttpClient _httpClient;
+
+    public GitHubClient(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<GitHubSearchResponse> SearchRepositoriesAsync(string query)
+    {
+        var response = await _httpClient.GetFromJsonAsync<GitHubSearchResponse>($"search/repositories?q={Uri.EscapeDataString(query)}");
+        return response ?? new GitHubSearchResponse(0, false, Array.Empty<GitHubRepository>());
     }
 }

@@ -14,6 +14,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddApplicationLayer();
+        builder.Services.AddInfrastructureLayer();
 
         var app = builder.Build();
 
