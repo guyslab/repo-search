@@ -19,6 +19,7 @@ internal static class ServiceCollectionExtensions
     
     public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<GithubClientOptions>(options => { options.RetryCount = 3; options.DelaySeconds = 1; });
         services.AddHttpClient<IGithubClient, GitHubClient>(client =>
         {
             client.BaseAddress = new Uri("https://api.github.com/");
