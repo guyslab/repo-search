@@ -27,6 +27,7 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseMiddleware<UserIdMiddleware>();
         app.UseAuthorization();
 
 

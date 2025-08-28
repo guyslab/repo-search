@@ -15,4 +15,4 @@ The goal of this project is to create a web application that allows users to sea
 2. Contract project/package for interfaces and models
 3. Use cases are implemented in a single BL package, but are separated in a way that enables package easy package splitting.
 4. Configuration is hardcoded in the setup, but with configuration providers in mind by passing IConfiguration to the setup methods.
-
+5. Authentication is mocked, with a middleware that sets a fixed user ID for demonstration purposes, instead of implementing a JWT solution.

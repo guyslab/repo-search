@@ -12,6 +12,8 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IFetchRepositoryAnalysisUseCase, FetchRepositoryAnalysisUseCase>();
         services.AddSingleton<IListUserFavoritesUseCase, ListUserFavoritesUseCase>();
         services.AddSingleton<IRemoveUserFavoriteUseCase, RemoveUserFavoriteUseCase>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ApiManagement.IRequestContext, ApiManagement.RequestContext>();
         return services;
     }
     
