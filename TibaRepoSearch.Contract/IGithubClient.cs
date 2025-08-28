@@ -1,4 +1,4 @@
-namespace TibaRepoSearch.Contract;
+namespace TibaRepoSearch;
 
 public interface IGithubClient
 {
