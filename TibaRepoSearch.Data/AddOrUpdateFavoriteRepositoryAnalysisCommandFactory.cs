@@ -14,7 +14,7 @@ public class AddOrUpdateFavoriteRepositoryAnalysisCommandFactory : IAddOrUpdateF
         var data = new FavoriteRepositoryAnalysisData
         {
             License = analysis.License,
-            TopicsJson = "[" + string.Join(",", analysis.Topics) + "]",
+            TopicsJson = string.Join(",", analysis.Topics),
             PrimaryLanguage = analysis.PrimaryLanguage,
             ReadmeLength = analysis.ReadmeLength,
             OpenIssues = analysis.OpenIssues,

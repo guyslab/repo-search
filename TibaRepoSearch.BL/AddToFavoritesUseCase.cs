@@ -2,8 +2,17 @@ namespace TibaRepoSearch;
 
 public class AddToFavoritesUseCase : IAddToFavoritesUseCase
 {
-    public Task AddAsync(AddFavoriteRequest request, string userId)
+    private readonly IAddOrUpdateFavoriteRepositoryCommandFactory _commandFactory;
+
+    public AddToFavoritesUseCase(IAddOrUpdateFavoriteRepositoryCommandFactory commandFactory)
     {
-        return Task.CompletedTask;
+        _commandFactory = commandFactory;
+    }
+
+    public async Task AddAsync(AddFavoriteRequest request, string userId)
+    {
+        var repository = new Repository(request.Name, request.Owner, request.Stars, request.UpdatedAt, string.Empty, request.RepoId);
+        var command = _commandFactory.Create(userId, repository);
+        await command.ExecuteAsync();
     }
 }

@@ -26,4 +26,12 @@ public class FavoriteRepositoryData : IFavoriteRepositoryData
     
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
+    
+    public virtual FavoriteRepositoryAnalysisData? Analysis { get; set; }
+    
+    IFavoriteRepositoryAnalysisData? IFavoriteRepositoryData.Analysis 
+    { 
+        get => Analysis; 
+        set => Analysis = value as FavoriteRepositoryAnalysisData; 
+    }
 }

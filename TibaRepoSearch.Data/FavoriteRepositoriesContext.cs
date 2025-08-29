@@ -17,5 +17,11 @@ public class FavoriteRepositoriesContext : DbContext
         
         modelBuilder.Entity<FavoriteRepositoryData>()
             .HasIndex(f => f.UserId);
+            
+        modelBuilder.Entity<FavoriteRepositoryData>()
+            .HasOne(f => f.Analysis)
+            .WithOne()
+            .HasForeignKey<FavoriteRepositoryAnalysisData>(a => a.FavoriteId)
+            .IsRequired(false);
     }
 }

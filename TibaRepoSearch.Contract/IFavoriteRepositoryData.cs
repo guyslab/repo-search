@@ -10,4 +10,5 @@ public interface IFavoriteRepositoryData
     int Stars { get; set; }
     DateTime UpdatedAt { get; set; }
     DateTime CreatedAt { get; set; }
+    IFavoriteRepositoryAnalysisData? Analysis { get; set; }
 }

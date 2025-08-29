@@ -2,8 +2,16 @@ namespace TibaRepoSearch;
 
 public class RemoveUserFavoriteUseCase : IRemoveUserFavoriteUseCase
 {
-    public Task RemoveAsync(string repoId, string userId)
+    private readonly IRemoveFavoriteRepositoryWithAnalysisCommandFactory _commandFactory;
+
+    public RemoveUserFavoriteUseCase(IRemoveFavoriteRepositoryWithAnalysisCommandFactory commandFactory)
     {
-        return Task.CompletedTask;
+        _commandFactory = commandFactory;
+    }
+
+    public async Task RemoveAsync(string repoId, string userId)
+    {
+        var command = _commandFactory.Create(repoId, userId);
+        await command.ExecuteAsync();
     }
 }

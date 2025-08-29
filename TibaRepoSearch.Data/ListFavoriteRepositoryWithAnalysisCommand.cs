@@ -16,6 +16,7 @@ public class ListFavoriteRepositoryWithAnalysisCommand : IListFavoriteRepository
     public async Task<IEnumerable<IFavoriteRepositoryData>> ExecuteAsync()
     {
         return await _context.FavoriteRepositories
+            .Include(f => f.Analysis)
             .Where(f => f.UserId == _userId)
             .ToListAsync();
     }
