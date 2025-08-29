@@ -18,3 +18,4 @@ The goal of this project is to create a web application that allows users to sea
 4. Configuration is hardcoded in the setup, but with configuration providers in mind by passing IConfiguration to the setup methods.
 5. Authentication is mocked, with a middleware that sets a fixed user ID for demonstration purposes, instead of implementing a JWT solution.
 6. The API project simplifies the system components structure, however involves both API tier and service tier concerns. Rate-limiting (although not implemented) and authorization are none of the service's concerns. Instead, a reverse proxy or an API gateway pattern should have been applied for such tasks. These tools often come with more infrastructure features such as common cyber attacks preventions (such as DDOS) for enhanced security, without much coding efforts.
+7. The repository search result are lazy-loaded for a preconfigured period of time for efficient paging
