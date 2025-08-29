@@ -4,8 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 80
 
 
 # This stage is used to build the service project
@@ -13,6 +12,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["TibaRepoSearch.API/TibaRepoSearch.API.csproj", "TibaRepoSearch.API/"]
+COPY ["TibaRepoSearch.Contract/TibaRepoSearch.Contract.csproj", "TibaRepoSearch.Contract/"]
+COPY ["TibaRepoSearch.BL/TibaRepoSearch.BL.csproj", "TibaRepoSearch.BL/"]
+COPY ["TibaRepoSearch.Github/TibaRepoSearch.Github.csproj", "TibaRepoSearch.Github/"]
+COPY ["TibaRepoSearch.Redis/TibaRepoSearch.Redis.csproj", "TibaRepoSearch.Redis/"]
+COPY ["TibaRepoSearch.Data/TibaRepoSearch.Data.csproj", "TibaRepoSearch.Data/"]
 RUN dotnet restore "./TibaRepoSearch.API/TibaRepoSearch.API.csproj"
 COPY . .
 WORKDIR "/src/TibaRepoSearch.API"

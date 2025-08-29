@@ -4,6 +4,7 @@ namespace TibaRepoSearch;
 
 [ApiController]
 [Route("api/[controller]")]
+[RequireUserId]
 public class SearchController : ControllerBase
 {
     private readonly IRepositorySearchUseCase _useCase;

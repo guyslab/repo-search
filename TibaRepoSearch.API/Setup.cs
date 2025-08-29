@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
 namespace TibaRepoSearch;
@@ -26,8 +27,18 @@ internal static class ServiceCollectionExtensions
             client.DefaultRequestHeaders.Add("User-Agent", "TibaRepoSearch");
         });
 
+        var dbHost = configuration["Database:Host"] ?? "localhost";
+        var dbName = configuration["Database:Name"] ?? "tibarepodb";
+        var dbUser = configuration["Database:User"] ?? "tibauser";
+        var dbPassword = configuration["Database:Password"] ?? "tibapass";
+        var connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword}";
+        
+        services.AddDbContext<FavoriteRepositoriesContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        var redisConnectionString = configuration["Redis:ConnectionString"] ?? "localhost:6379";
         services.AddSingleton<IConnectionMultiplexer>(provider =>
-            ConnectionMultiplexer.Connect("localhost:6379"));
+            ConnectionMultiplexer.Connect(redisConnectionString));
         services.AddSingleton<IDatabase>(provider =>
             provider.GetRequiredService<IConnectionMultiplexer>().GetDatabase());
         services.AddSingleton<ICacheThrough, RedisCacheThrough>();

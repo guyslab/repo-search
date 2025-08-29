@@ -5,6 +5,7 @@ namespace TibaRepoSearch;
 
 [ApiController]
 [Route("api/[controller]")]
+[RequireUserId]
 public class FavoritesController : ControllerBase
 {
     private readonly IAddToFavoritesUseCase _addToFavoritesUseCase;
@@ -23,7 +24,7 @@ public class FavoritesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FavoriteRepository>>> Get()
     {
-        var results = await _listUserFavoritesUseCase.ListAsync(_requestContext.GetUserId());
+        var results = await _listUserFavoritesUseCase.ListAsync(_requestContext.GetUserId()!);
         return Ok(results);
     }
 
@@ -34,14 +35,14 @@ public class FavoritesController : ControllerBase
             return BadRequest("Query parameter 'RepoId' is required");
         var favorite = new FavoriteRepository(request.Name, request.Owner, request.Stars, request.UpdatedAt, "", request.RepoId);
 
-        await _addToFavoritesUseCase.AddAsync(request, _requestContext.GetUserId());
+        await _addToFavoritesUseCase.AddAsync(request, _requestContext.GetUserId()!);
         return Accepted();
     }
 
     [HttpDelete("{repoId}")]
     public async Task<ActionResult> Delete(string repoId)
     {
-        await _removeUserFavoriteUseCase.RemoveAsync(repoId, _requestContext.GetUserId());
+        await _removeUserFavoriteUseCase.RemoveAsync(repoId, _requestContext.GetUserId()!);
         return NoContent();
     }
 }

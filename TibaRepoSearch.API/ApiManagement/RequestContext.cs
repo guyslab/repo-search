@@ -9,7 +9,7 @@ public class RequestContext : IRequestContext
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public string GetUserId()
+    public string? GetUserId()
     {
         return _httpContextAccessor.HttpContext?.Items["UserId"]?.ToString();
     }
