@@ -17,7 +17,7 @@ public class RepositorySearchUseCase : IRepositorySearchUseCase
 
     public async Task<IEnumerable<Repository>> SearchAsync(string query)
     {
-        var cacheKey = $"search:{query}";
+        var cacheKey = $"{_options.CacheKey}:{query}";
         var response = await _cache.Get(cacheKey, async _ => await _githubClient.SearchRepositoriesAsync(query), TimeSpan.FromSeconds(_options.CacheTtlSeconds));
         return response.Items.Select(repo => new Repository(
             repo.Name,
