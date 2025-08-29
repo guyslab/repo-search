@@ -1,6 +1,6 @@
 namespace TibaRepoSearch;
 
-public class RequestContext
+public class RequestContextModel
 {
     public string? UserId { get; set; }
 }

@@ -1,4 +1,4 @@
-namespace TibaRepoSearch.ApiManagement;
+namespace TibaRepoSearch;
 
 public interface IRequestContext
 {

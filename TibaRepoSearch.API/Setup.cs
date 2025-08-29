@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace TibaRepoSearch;
 
-internal static class ServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
     {
@@ -14,7 +14,10 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IListUserFavoritesUseCase, ListUserFavoritesUseCase>();
         services.AddSingleton<IRemoveUserFavoriteUseCase, RemoveUserFavoriteUseCase>();
         services.AddHttpContextAccessor();
-        services.AddScoped<ApiManagement.IRequestContext, ApiManagement.RequestContext>();
+        services.AddScoped<IRequestContext, RequestContext>();
+        services.AddSingleton<IAddOrUpdateFavoriteRepositoryCommandFactory, AddOrUpdateFavoriteRepositoryCommandFactory>();
+        services.AddSingleton<IListFavoriteRepositoryWithAnalysisCommandFactory, ListFavoriteRepositoryWithAnalysisCommandFactory>();
+        services.AddSingleton<IRemoveFavoriteRepositoryWithAnalysisCommandFactory, RemoveFavoriteRepositoryWithAnalysisCommandFactory>();
         return services;
     }
     
@@ -34,7 +37,7 @@ internal static class ServiceCollectionExtensions
         var connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword}";
         
         services.AddDbContext<FavoriteRepositoriesContext>(options =>
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(connectionString));        
 
         var redisConnectionString = configuration["Redis:ConnectionString"] ?? "localhost:6379";
         services.AddSingleton<IConnectionMultiplexer>(provider =>
