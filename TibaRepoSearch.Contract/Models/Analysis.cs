@@ -10,4 +10,4 @@ public record Analysis(
     int StarsSnapshot,
     int ActivityDays,
     string DefaultBranch,
-    double HealthScore);
+    decimal HealthScore);
