@@ -52,10 +52,8 @@ public static class ServiceCollectionExtensions
                 options.UseNpgsql(connectionString));
 
             var redisConnectionString = configuration["Redis:ConnectionString"] ?? "localhost:6379";
-            services.AddSingleton<IConnectionMultiplexer>(provider =>
-                ConnectionMultiplexer.Connect(redisConnectionString));
-            services.AddSingleton<IDatabase>(provider =>
-                provider.GetRequiredService<IConnectionMultiplexer>().GetDatabase());
+            services.AddSingleton<Lazy<IConnectionMultiplexer>>(provider =>
+                new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(redisConnectionString)));
             services.AddSingleton<ICacheThrough, RedisCacheThrough>();
             
             var rabbitMQHost = configuration["RabbitMQ:Host"] ?? "localhost";

@@ -6,20 +6,22 @@ namespace TibaRepoSearch;
 
 public class RedisCacheThrough : ICacheThrough
 {
-    private readonly IDatabase _database;
+    private IDatabase? _database;
+    private readonly Lazy<IConnectionMultiplexer> _lazyConnection;
     private readonly ILogger<RedisCacheThrough> _logger;
 
-    public RedisCacheThrough(IDatabase database, ILogger<RedisCacheThrough> logger)
+    public RedisCacheThrough(Lazy<IConnectionMultiplexer> lazyConnection, ILogger<RedisCacheThrough> logger)
     {
-        _database = database;
+        _lazyConnection = lazyConnection;
         _logger = logger;
-        _logger.LogTrace("[RedisCacheThrough..ctor] {database} OK", database);
+        _logger.LogTrace("[RedisCacheThrough..ctor] {lazyConnection} OK", lazyConnection);
     }
 
     public async Task<TResult> Get<TResult>(string key, Func<string, Task<TResult>> onMiss, TimeSpan ttl)
     {
         try
         {
+            _database ??= _lazyConnection.Value.GetDatabase();            
             var cachedValue = await _database.StringGetAsync(key);
             
             if (cachedValue.HasValue)
