@@ -11,10 +11,10 @@ public class RabbitMQEventPublisher<TEvent> : IEventPublisher<TEvent>, IDisposab
     private IChannel? _channel;
     private readonly string _queueName;
 
-    public RabbitMQEventPublisher(string hostName, string queueName)
+    public RabbitMQEventPublisher(string hostName, string queueName, string userName = "guest", string password = "guest")
     {
         _queueName = queueName;
-        _connectionFactory = new ConnectionFactory { HostName = hostName };
+        _connectionFactory = new ConnectionFactory { HostName = hostName, UserName = userName, Password = password };
     }
 
     public async Task PublishAsync(TEvent payload)

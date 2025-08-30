@@ -58,8 +58,10 @@ public static class ServiceCollectionExtensions
             
             var rabbitMQHost = configuration["RabbitMQ:Host"] ?? "localhost";
             var repoFavoritedQueue = configuration["RabbitMQ:RepoFavoritedQueue"] ?? "repo.favorited";
+            var rabbitMQUser = configuration["RabbitMQ:UserName"] ?? "admin";
+            var rabbitMQPassword = configuration["RabbitMQ:Password"] ?? "admin";
             services.AddSingleton<IEventPublisher<RepositoryFavoritedMessage>>(provider =>
-                new RabbitMQEventPublisher<RepositoryFavoritedMessage>(rabbitMQHost, repoFavoritedQueue));
+                new RabbitMQEventPublisher<RepositoryFavoritedMessage>(rabbitMQHost, repoFavoritedQueue, rabbitMQUser, rabbitMQPassword));
             
             Console.WriteLine($"[ServiceCollectionExtensions.AddInfrastructureLayer] {services};{configuration} OK");
             return services;

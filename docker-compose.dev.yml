@@ -49,6 +49,8 @@ services:
       dockerfile: TibaRepoSearch.AnalysisFetcher/Dockerfile
     environment:
       - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__UserName=admin
+      - RabbitMQ__Password=admin
       - RabbitMQ__RepoFavoritedQueue=repo.favorited
       - RabbitMQ__AnalysisReadyQueue=analysis.ready
     depends_on:
@@ -65,6 +67,8 @@ services:
       - Database__Password=tibapass
       - Redis__ConnectionString=redis:6379
       - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__UserName=admin
+      - RabbitMQ__Password=admin
       - RabbitMQ__RepoFavoritedQueue=repo.favorited
       - RabbitMQ__AnalysisReadyQueue=analysis.ready
     ports:
