@@ -5,23 +5,24 @@ namespace TibaRepoSearch;
 
 public class AddOrUpdateFavoriteRepositoryCommand : IAddOrUpdateFavoriteRepositoryCommand
 {
-    private readonly FavoriteRepositoriesContext _context;
+    private readonly IDbContextFactory<FavoriteRepositoriesContext> _contextFactory;
     private readonly IFavoriteRepositoryData _data;
     private readonly ILogger<AddOrUpdateFavoriteRepositoryCommand> _logger;
 
-    public AddOrUpdateFavoriteRepositoryCommand(IFavoriteRepositoryData data, FavoriteRepositoriesContext context, ILogger<AddOrUpdateFavoriteRepositoryCommand> logger)
+    public AddOrUpdateFavoriteRepositoryCommand(IFavoriteRepositoryData data, IDbContextFactory<FavoriteRepositoriesContext> contextFactory, ILogger<AddOrUpdateFavoriteRepositoryCommand> logger)
     {
         _data = data;
-        _context = context;
+        _contextFactory = contextFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommand..ctor] {data};{context} OK", DateTime.UtcNow.ToString("O"), data, context);
+        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommand..ctor] {data};{contextFactory} OK", DateTime.UtcNow.ToString("O"), data, contextFactory);
     }
 
     public async Task ExecuteAsync()
     {
         try
         {
-            var existing = await _context.FavoriteRepositories
+            using var context = _contextFactory.CreateDbContext();
+            var existing = await context.FavoriteRepositories
                 .FirstOrDefaultAsync(f => f.RepoId == _data.RepoId && f.UserId == _data.UserId);
 
             if (existing != null)
@@ -33,7 +34,7 @@ public class AddOrUpdateFavoriteRepositoryCommand : IAddOrUpdateFavoriteReposito
             }
             else
             {
-                _context.FavoriteRepositories.Add(new FavoriteRepositoryData
+                context.FavoriteRepositories.Add(new FavoriteRepositoryData
                 {
                     Id = Guid.NewGuid(),
                     UserId = _data.UserId,
@@ -46,7 +47,7 @@ public class AddOrUpdateFavoriteRepositoryCommand : IAddOrUpdateFavoriteReposito
                 });
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommand.ExecuteAsync]  OK", DateTime.UtcNow.ToString("O"));
         }
         catch (Exception ex)

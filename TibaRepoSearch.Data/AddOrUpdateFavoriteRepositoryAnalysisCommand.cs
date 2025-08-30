@@ -5,32 +5,33 @@ namespace TibaRepoSearch;
 
 public class AddOrUpdateFavoriteRepositoryAnalysisCommand : IAddOrUpdateFavoriteRepositoryAnalysisCommand
 {
-    private readonly FavoriteRepositoriesContext _context;
+    private readonly IDbContextFactory<FavoriteRepositoriesContext> _contextFactory;
     private readonly IFavoriteRepositoryAnalysisData _data;
     private readonly string _repoId;
     private readonly string _userId;
     private readonly ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommand> _logger;
 
-    public AddOrUpdateFavoriteRepositoryAnalysisCommand(IFavoriteRepositoryAnalysisData data, string repoId, string userId, FavoriteRepositoriesContext context, ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommand> logger)
+    public AddOrUpdateFavoriteRepositoryAnalysisCommand(IFavoriteRepositoryAnalysisData data, string repoId, string userId, IDbContextFactory<FavoriteRepositoriesContext> contextFactory, ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommand> logger)
     {
         _data = data;
         _repoId = repoId;
         _userId = userId;
-        _context = context;
+        _contextFactory = contextFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryAnalysisCommand..ctor] {data};{repoId};{userId};{context} OK", DateTime.UtcNow.ToString("O"), data, repoId, userId, context);
+        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryAnalysisCommand..ctor] {data};{repoId};{userId};{contextFactory} OK", DateTime.UtcNow.ToString("O"), data, repoId, userId, contextFactory);
     }
 
     public async Task ExecuteAsync()
     {
         try
         {
-            var favorite = await _context.FavoriteRepositories
+            using var context = _contextFactory.CreateDbContext();
+            var favorite = await context.FavoriteRepositories
                 .FirstOrDefaultAsync(f => f.RepoId == _repoId && f.UserId == _userId);
             
             if (favorite == null) return;
             
-            var existing = await _context.FavoriteRepositoryAnalysis
+            var existing = await context.FavoriteRepositoryAnalysis
                 .FirstOrDefaultAsync(a => a.FavoriteId == favorite.Id);
 
             if (existing != null)
@@ -48,7 +49,7 @@ public class AddOrUpdateFavoriteRepositoryAnalysisCommand : IAddOrUpdateFavorite
             }
             else
             {
-                _context.FavoriteRepositoryAnalysis.Add(new FavoriteRepositoryAnalysisData
+                context.FavoriteRepositoryAnalysis.Add(new FavoriteRepositoryAnalysisData
                 {
                     Id = Guid.NewGuid(),
                     FavoriteId = favorite.Id,
@@ -66,7 +67,7 @@ public class AddOrUpdateFavoriteRepositoryAnalysisCommand : IAddOrUpdateFavorite
                 });
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryAnalysisCommand.ExecuteAsync]  OK", DateTime.UtcNow.ToString("O"));
         }
         catch (Exception ex)

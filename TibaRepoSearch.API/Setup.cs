@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
             services.AddSingleton<IAddOrUpdateFavoriteRepositoryCommandFactory, AddOrUpdateFavoriteRepositoryCommandFactory>();
             services.AddSingleton<IListFavoriteRepositoryWithAnalysisCommandFactory, ListFavoriteRepositoryWithAnalysisCommandFactory>();
             services.AddSingleton<IRemoveFavoriteRepositoryWithAnalysisCommandFactory, RemoveFavoriteRepositoryWithAnalysisCommandFactory>();
+            services.AddSingleton<IAddOrUpdateFavoriteRepositoryAnalysisCommandFactory, AddOrUpdateFavoriteRepositoryAnalysisCommandFactory>();
             Console.WriteLine($"[ServiceCollectionExtensions.AddApplicationLayer] {services};{configuration} OK");
             return services;
         }
@@ -47,8 +48,8 @@ public static class ServiceCollectionExtensions
             var dbPassword = configuration["Database:Password"] ?? "tibapass";
             var connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword}";
             
-            services.AddDbContext<FavoriteRepositoriesContext>(options =>
-                options.UseNpgsql(connectionString));        
+            services.AddDbContextFactory<FavoriteRepositoriesContext>(options =>
+                options.UseNpgsql(connectionString));
 
             var redisConnectionString = configuration["Redis:ConnectionString"] ?? "localhost:6379";
             services.AddSingleton<IConnectionMultiplexer>(provider =>

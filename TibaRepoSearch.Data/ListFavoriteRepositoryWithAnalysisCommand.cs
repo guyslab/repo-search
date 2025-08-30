@@ -5,23 +5,24 @@ namespace TibaRepoSearch;
 
 public class ListFavoriteRepositoryWithAnalysisCommand : IListFavoriteRepositoryWithAnalysisCommand
 {
-    private readonly FavoriteRepositoriesContext _context;
+    private readonly IDbContextFactory<FavoriteRepositoriesContext> _contextFactory;
     private readonly string _userId;
     private readonly ILogger<ListFavoriteRepositoryWithAnalysisCommand> _logger;
 
-    public ListFavoriteRepositoryWithAnalysisCommand(string userId, FavoriteRepositoriesContext context, ILogger<ListFavoriteRepositoryWithAnalysisCommand> logger)
+    public ListFavoriteRepositoryWithAnalysisCommand(string userId, IDbContextFactory<FavoriteRepositoriesContext> contextFactory, ILogger<ListFavoriteRepositoryWithAnalysisCommand> logger)
     {
         _userId = userId;
-        _context = context;
+        _contextFactory = contextFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommand..ctor] {userId};{context} OK", DateTime.UtcNow.ToString("O"), userId, context);
+        _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommand..ctor] {userId};{contextFactory} OK", DateTime.UtcNow.ToString("O"), userId, contextFactory);
     }
 
     public async Task<IEnumerable<IFavoriteRepositoryData>> ExecuteAsync()
     {
         try
         {
-            var result = await _context.FavoriteRepositories
+            using var context = _contextFactory.CreateDbContext();
+            var result = await context.FavoriteRepositories
                 .Include(f => f.Analysis)
                 .Where(f => f.UserId == _userId)
                 .ToListAsync();

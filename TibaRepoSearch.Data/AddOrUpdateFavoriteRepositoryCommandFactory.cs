@@ -1,19 +1,20 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace TibaRepoSearch;
 
 public class AddOrUpdateFavoriteRepositoryCommandFactory : IAddOrUpdateFavoriteRepositoryCommandFactory
 {
-    private readonly FavoriteRepositoriesContext _context;
+    private readonly IDbContextFactory<FavoriteRepositoriesContext> _contextFactory;
     private readonly ILogger<AddOrUpdateFavoriteRepositoryCommandFactory> _logger;
     private readonly ILogger<AddOrUpdateFavoriteRepositoryCommand> _commandLogger;
 
-    public AddOrUpdateFavoriteRepositoryCommandFactory(FavoriteRepositoriesContext context, ILogger<AddOrUpdateFavoriteRepositoryCommandFactory> logger, ILogger<AddOrUpdateFavoriteRepositoryCommand> commandLogger)
+    public AddOrUpdateFavoriteRepositoryCommandFactory(IDbContextFactory<FavoriteRepositoriesContext> contextFactory, ILogger<AddOrUpdateFavoriteRepositoryCommandFactory> logger, ILogger<AddOrUpdateFavoriteRepositoryCommand> commandLogger)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _logger = logger;
         _commandLogger = commandLogger;
-        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommandFactory..ctor] {context} OK", DateTime.UtcNow.ToString("O"), context);
+        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommandFactory..ctor] {contextFactory} OK", DateTime.UtcNow.ToString("O"), contextFactory);
     }
 
     public IAddOrUpdateFavoriteRepositoryCommand Create(string userId, Repository repository)
@@ -30,7 +31,7 @@ public class AddOrUpdateFavoriteRepositoryCommandFactory : IAddOrUpdateFavoriteR
                 UpdatedAt = repository.UpdatedAt
             };
 
-            var result = new AddOrUpdateFavoriteRepositoryCommand(data, _context, _commandLogger);
+            var result = new AddOrUpdateFavoriteRepositoryCommand(data, _contextFactory, _commandLogger);
             _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommandFactory.Create] {userId};{repository} OK", DateTime.UtcNow.ToString("O"), userId, repository);
             return result;
         }

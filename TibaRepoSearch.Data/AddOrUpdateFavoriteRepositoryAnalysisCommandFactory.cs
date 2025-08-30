@@ -1,19 +1,20 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace TibaRepoSearch;
 
 public class AddOrUpdateFavoriteRepositoryAnalysisCommandFactory : IAddOrUpdateFavoriteRepositoryAnalysisCommandFactory
 {
-    private readonly FavoriteRepositoriesContext _context;
+    private readonly IDbContextFactory<FavoriteRepositoriesContext> _contextFactory;
     private readonly ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommandFactory> _logger;
     private readonly ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommand> _commandLogger;
 
-    public AddOrUpdateFavoriteRepositoryAnalysisCommandFactory(FavoriteRepositoriesContext context, ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommandFactory> logger, ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommand> commandLogger)
+    public AddOrUpdateFavoriteRepositoryAnalysisCommandFactory(IDbContextFactory<FavoriteRepositoriesContext> contextFactory, ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommandFactory> logger, ILogger<AddOrUpdateFavoriteRepositoryAnalysisCommand> commandLogger)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _logger = logger;
         _commandLogger = commandLogger;
-        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryAnalysisCommandFactory..ctor] {context} OK", DateTime.UtcNow.ToString("O"), context);
+        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryAnalysisCommandFactory..ctor] {contextFactory} OK", DateTime.UtcNow.ToString("O"), contextFactory);
     }
 
     public IAddOrUpdateFavoriteRepositoryAnalysisCommand Create(string repoId, string userId, Analysis analysis)
@@ -34,7 +35,7 @@ public class AddOrUpdateFavoriteRepositoryAnalysisCommandFactory : IAddOrUpdateF
                 HealthScore = analysis.HealthScore
             };
 
-            var result = new AddOrUpdateFavoriteRepositoryAnalysisCommand(data, repoId, userId, _context, _commandLogger);
+            var result = new AddOrUpdateFavoriteRepositoryAnalysisCommand(data, repoId, userId, _contextFactory, _commandLogger);
             _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryAnalysisCommandFactory.Create] {repoId};{userId};{analysis} OK", DateTime.UtcNow.ToString("O"), repoId, userId, analysis);
             return result;
         }

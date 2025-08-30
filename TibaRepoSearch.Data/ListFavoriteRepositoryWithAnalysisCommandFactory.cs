@@ -1,26 +1,27 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace TibaRepoSearch;
 
 public class ListFavoriteRepositoryWithAnalysisCommandFactory : IListFavoriteRepositoryWithAnalysisCommandFactory
 {
-    private readonly FavoriteRepositoriesContext _context;
+    private readonly IDbContextFactory<FavoriteRepositoriesContext> _contextFactory;
     private readonly ILogger<ListFavoriteRepositoryWithAnalysisCommandFactory> _logger;
     private readonly ILogger<ListFavoriteRepositoryWithAnalysisCommand> _commandLogger;
 
-    public ListFavoriteRepositoryWithAnalysisCommandFactory(FavoriteRepositoriesContext context, ILogger<ListFavoriteRepositoryWithAnalysisCommandFactory> logger, ILogger<ListFavoriteRepositoryWithAnalysisCommand> commandLogger)
+    public ListFavoriteRepositoryWithAnalysisCommandFactory(IDbContextFactory<FavoriteRepositoriesContext> contextFactory, ILogger<ListFavoriteRepositoryWithAnalysisCommandFactory> logger, ILogger<ListFavoriteRepositoryWithAnalysisCommand> commandLogger)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _logger = logger;
         _commandLogger = commandLogger;
-        _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommandFactory..ctor] {context} OK", DateTime.UtcNow.ToString("O"), context);
+        _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommandFactory..ctor] {contextFactory} OK", DateTime.UtcNow.ToString("O"), contextFactory);
     }
 
     public IListFavoriteRepositoryWithAnalysisCommand Create(string userId)
     {
         try
         {
-            var result = new ListFavoriteRepositoryWithAnalysisCommand(userId, _context, _commandLogger);
+            var result = new ListFavoriteRepositoryWithAnalysisCommand(userId, _contextFactory, _commandLogger);
             _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommandFactory.Create] {userId} OK", DateTime.UtcNow.ToString("O"), userId);
             return result;
         }
