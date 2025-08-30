@@ -28,3 +28,4 @@ The goal of this project is to create a web application that allows users to sea
 ## Enviroment Setup
 	1. Install docker and docker-compose
 	2. Change the environment variables in the docker-compose.yml file to contain your own secrets
+	3. Run ``docker-compose up` in the project root directory

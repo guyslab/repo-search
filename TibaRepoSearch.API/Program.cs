@@ -6,6 +6,9 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        var port = Environment.GetEnvironmentVariable("API_PORT") ?? "5000";
+        builder.WebHost.UseUrls($"http://*:{port}");
 
         // Add services to the container.
 
