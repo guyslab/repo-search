@@ -23,9 +23,48 @@ The goal of this project is to create a web application that allows users to sea
 	8. The Contract project contains contracts of all tiers (presentation, BL, and data access) for the project is small enough. It should further be splitted for scalability and maintainability.
 	9. Command/Query factories separate between business logic and data
 	10. Targeting .NET 8.0 for more deployment options
+	11. The client-API connection is currently insecure. Again, a proper API gateway setup shall reslove this.
+	12. The API emits trace logs to standard output using the Microsoft Logger. This enables more control over tracability, such as using telemetry standards, etc.
 
 
 ## Enviroment Setup
 	1. Install docker and docker-compose
 	2. Change the environment variables in the docker-compose.yml file to contain your own secrets
 	3. Run ``docker-compose up` in the project root directory
+
+## Trace logs
+Every method emits a log entry of the following format:
+`[<name of class>.<name of method>] <string representation of each parameter delimited by a semicolon> <in case of exception - the error message; in case of success - 'OK'>`
+
+## Use the API
+### Search
+#### Request
+```bash
+curl -X GET "http://localhost:5000/api/search?q=react&page1&pageSize=1"
+```
+#### Response payload (truncated)
+```json
+[{"name":"react","owner":"facebook","stars":238478,"updateAt":"2025-08-30T06:11:25Z","decription":"The library for the web and native user interfaces.","repoId":"10270250"},...}]
+```
+### Add to favorites
+#### Request
+```bash
+curl -X POST "http://localhost"5000/api/favorites" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "repoId": "10270250",
+	"name": "react",
+	"owner": "facebook",
+	"stars": 238478,
+	"updatedAt": "2025-08-30T06:11:25Z"
+  }'
+```
+#### Response
+* Status code: 202
+
+### Check the favorites list
+#### Request
+```bash
+curl -X GET "http://localhost:5000/api/favorites"
+```
+#### Response

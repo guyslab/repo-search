@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace TibaRepoSearch.Tests.DI;
@@ -24,6 +24,7 @@ public class ControllerDependencyTests
         services.AddApplicationLayer(configuration);
         services.AddInfrastructureLayer(configuration);
         services.AddHttpContextAccessor();
+        services.AddLogging();
 
         return services.BuildServiceProvider();
     }
@@ -34,7 +35,8 @@ public class ControllerDependencyTests
         using var serviceProvider = CreateServiceProvider();
         
         var useCase = serviceProvider.GetRequiredService<IRepositorySearchUseCase>();
-        var controller = new SearchController(useCase);
+        var logger = serviceProvider.GetRequiredService<ILogger<SearchController>>();
+        var controller = new SearchController(useCase, logger);
         
         Assert.NotNull(controller);
     }
@@ -49,11 +51,13 @@ public class ControllerDependencyTests
         var removeUserFavoriteUseCase = serviceProvider.GetRequiredService<IRemoveUserFavoriteUseCase>();
         var requestContext = serviceProvider.GetRequiredService<IRequestContext>();
         
+        var logger = serviceProvider.GetRequiredService<ILogger<FavoritesController>>();
         var controller = new FavoritesController(
             addToFavoritesUseCase,
             listUserFavoritesUseCase,
             removeUserFavoriteUseCase,
-            requestContext);
+            requestContext,
+            logger);
         
         Assert.NotNull(controller);
     }

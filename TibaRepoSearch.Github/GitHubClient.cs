@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Polly;
 
 namespace TibaRepoSearch;
@@ -8,22 +9,35 @@ public class GitHubClient : IGithubClient
 {
     private readonly HttpClient _httpClient;
     private readonly GithubClientOptions _options;
+    private readonly ILogger<GitHubClient> _logger;
 
-    public GitHubClient(HttpClient httpClient, IOptions<GithubClientOptions> options)
+    public GitHubClient(HttpClient httpClient, IOptions<GithubClientOptions> options, ILogger<GitHubClient> logger)
     {
         _httpClient = httpClient;
         _options = options.Value;
+        _logger = logger;
+        _logger.LogTrace("[{timestamp}] [GitHubClient..ctor] {httpClient};{options} OK", DateTime.UtcNow.ToString("O"), httpClient, options);
     }
 
     public async Task<GitHubSearchResponse> SearchRepositoriesAsync(string query)
     {
-        var retryPolicy = Policy
-            .Handle<HttpRequestException>()
-            .WaitAndRetryAsync(_options.RetryCount, retryAttempt => TimeSpan.FromSeconds(_options.DelaySeconds));
+        try
+        {
+            var retryPolicy = Policy
+                .Handle<HttpRequestException>()
+                .WaitAndRetryAsync(_options.RetryCount, retryAttempt => TimeSpan.FromSeconds(_options.DelaySeconds));
 
-        var response = await retryPolicy.ExecuteAsync(async () =>
-            await _httpClient.GetFromJsonAsync<GitHubSearchResponse>($"search/repositories?q={Uri.EscapeDataString(query)}"));
-        
-        return response ?? new GitHubSearchResponse(0, false, Array.Empty<GitHubRepository>());
+            var response = await retryPolicy.ExecuteAsync(async () =>
+                await _httpClient.GetFromJsonAsync<GitHubSearchResponse>($"search/repositories?q={Uri.EscapeDataString(query)}"));
+            
+            var result = response ?? new GitHubSearchResponse(0, false, Array.Empty<GitHubRepository>());
+            _logger.LogTrace("[{timestamp}] [GitHubClient.SearchRepositoriesAsync] {query} OK", DateTime.UtcNow.ToString("O"), query);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogTrace("[{timestamp}] [GitHubClient.SearchRepositoriesAsync] {query} {Message}", DateTime.UtcNow.ToString("O"), query, ex.Message);
+            throw;
+        }
     }
 }
