@@ -17,6 +17,22 @@ services:
     ports:
       - "6379:6379"
 
+  migration:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - Database__Host=postgres
+      - Database__Name=tibarepodb
+      - Database__User=tibauser
+      - Database__Password=tibapass
+    command: >
+      sh -c "dotnet tool install --global dotnet-ef --version 8.0.11 &&
+             dotnet ef database update --project TibaRepoSearch.Data --startup-project TibaRepoSearch.API"
+    depends_on:
+      - postgres
+
   api:
     build:
       context: .
@@ -33,6 +49,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - migration
 
 volumes:
   postgres_data:
