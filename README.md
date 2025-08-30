@@ -26,7 +26,7 @@ The goal of this project is to create a web application that allows users to sea
 	11. The client-API connection is currently insecure. Again, a proper API gateway setup shall reslove this.
 	12. The API emits trace logs to standard output using the Microsoft Logger. This enables more control over tracability, such as using telemetry standards, etc.
 	13. Docker compose includes a DB migration step
-	14. UI Frontend and rate limiting are not implemented due to time constraints.
+	14. UI Frontend, authentication, and rate limiting are not implemented due to time constraints.
 
 
 ## Enviroment Setup
@@ -47,7 +47,16 @@ curl -X GET "http://localhost:5000/api/search?q=react&page1&pageSize=1"
 ```
 #### Response payload (truncated)
 ```json
-[{"name":"react","owner":"facebook","stars":238479,"updateAt":"2025-08-30T06:11:25Z","decription":"The library for the web and native user interfaces.","repoId":"10270250"},...}]
+[
+  {
+    "name": "react",
+    "owner": "facebook",
+    "stars": 238479,
+    "updateAt": "2025-08-30T06:11:25Z",
+    "description": "The library for the web and native user interfaces.",
+    "repoId": "10270250"
+  }
+]
 ```
 ### Add to favorites
 #### Request
@@ -65,12 +74,62 @@ curl -X POST "http://localhost"5000/api/favorites" \
 #### Response
 * Status code: 202
 
-### Check the favorites list
+### Check the favorites list immediately after adding a favorite (no analysis yet)
 #### Request
 ```bash
 curl -X GET "http://localhost:5000/api/favorites"
 ```
 #### Response payload
 ```json
-[{"analysis":null,"pending":true,"name":"react","owner":"facebook","stars":238479,"updateAt":"2025-08-30T09:35:11Z","decription":"","repoId":"10270250"}]
+[
+  {
+    "analysis": null,
+    "pending": true,
+    "name": "react",
+    "owner": "facebook",
+    "stars": 238479,
+    "updateAt": "2025-08-30T09:35:11Z",
+    "description": "",
+    "repoId": "10270250"
+  }
+]
+```
+
+### Check the favorites list later (with analysis)
+#### Request
+```bash
+curl -X GET "http://localhost:5000/api/favorites"
+```
+#### Response payload
+```json
+[
+  {
+    "analysis": {
+      "license": "MIT",
+      "topics": [
+        "declarative",
+        "frontend",
+        "javascript",
+        "library",
+        "react",
+        "ui"
+      ],
+      "primaryLanguage": "JavaScript",
+      "readmeLength": 5317,
+      "openIssues": 1029,
+      "forks": 49221,
+      "starsSnapshot": 238490,
+      "activityDays": 0,
+      "defaultBranch": "main",
+      "healthScore": 99.58
+    },
+    "pending": false,
+    "name": "react",
+    "owner": "facebook",
+    "stars": 238479,
+    "updateAt": "2025-08-30T09:35:11Z",
+    "description": "",
+    "repoId": "10270250"
+  }
+]
 ```
