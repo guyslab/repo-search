@@ -25,6 +25,7 @@ The goal of this project is to create a web application that allows users to sea
 	10. Targeting .NET 8.0 for more deployment options
 	11. The client-API connection is currently insecure. Again, a proper API gateway setup shall reslove this.
 	12. The API emits trace logs to standard output using the Microsoft Logger. This enables more control over tracability, such as using telemetry standards, etc.
+	13. Docker compose includes a DB migration step
 
 
 ## Enviroment Setup
@@ -45,7 +46,7 @@ curl -X GET "http://localhost:5000/api/search?q=react&page1&pageSize=1"
 ```
 #### Response payload (truncated)
 ```json
-[{"name":"react","owner":"facebook","stars":238478,"updateAt":"2025-08-30T06:11:25Z","decription":"The library for the web and native user interfaces.","repoId":"10270250"},...}]
+[{"name":"react","owner":"facebook","stars":238479,"updateAt":"2025-08-30T06:11:25Z","decription":"The library for the web and native user interfaces.","repoId":"10270250"},...}]
 ```
 ### Add to favorites
 #### Request
@@ -56,8 +57,8 @@ curl -X POST "http://localhost"5000/api/favorites" \
     "repoId": "10270250",
 	"name": "react",
 	"owner": "facebook",
-	"stars": 238478,
-	"updatedAt": "2025-08-30T06:11:25Z"
+	"stars": 238479,
+	"updatedAt": "2025-08-30T09:35:11Z"
   }'
 ```
 #### Response
@@ -68,4 +69,7 @@ curl -X POST "http://localhost"5000/api/favorites" \
 ```bash
 curl -X GET "http://localhost:5000/api/favorites"
 ```
-#### Response
+#### Response payload
+```json
+[{"analysis":null,"pending":true,"name":"react","owner":"facebook","stars":238479,"updateAt":"2025-08-30T09:35:11Z","decription":"","repoId":"10270250"}]
+```

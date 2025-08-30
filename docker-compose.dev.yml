@@ -17,6 +17,15 @@ services:
     ports:
       - "6379:6379"
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
   migration:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     working_dir: /app
@@ -34,6 +43,17 @@ services:
     depends_on:
       - postgres
 
+  analysis-fetcher:
+    build:
+      context: .
+      dockerfile: TibaRepoSearch.AnalysisFetcher/Dockerfile
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__RepoFavoritedQueue=repo.favorited
+      - RabbitMQ__AnalysisReadyQueue=analysis.ready
+    depends_on:
+      - rabbitmq
+
   api:
     build:
       context: .
@@ -44,12 +64,15 @@ services:
       - Database__User=tibauser
       - Database__Password=tibapass
       - Redis__ConnectionString=redis:6379
-      - API_PORT=5000
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__RepoFavoritedQueue=repo.favorited
+      - RabbitMQ__AnalysisReadyQueue=analysis.ready
     ports:
       - "5000:5000"
     depends_on:
       - postgres
       - redis
+      - rabbitmq
       - migration
 
 volumes:
