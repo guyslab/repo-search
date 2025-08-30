@@ -61,7 +61,7 @@ public static class ServiceCollectionExtensions
             var rabbitMQUser = configuration["RabbitMQ:UserName"] ?? "admin";
             var rabbitMQPassword = configuration["RabbitMQ:Password"] ?? "admin";
             services.AddSingleton<IEventPublisher<RepositoryFavoritedMessage>>(provider =>
-                new RabbitMQEventPublisher<RepositoryFavoritedMessage>(rabbitMQHost, repoFavoritedQueue, rabbitMQUser, rabbitMQPassword));
+                new RabbitMQEventPublisher<RepositoryFavoritedMessage>(rabbitMQHost, repoFavoritedQueue, provider.GetRequiredService<ILogger<RabbitMQEventPublisher<RepositoryFavoritedMessage>>>(), rabbitMQUser, rabbitMQPassword));
             
             Console.WriteLine($"[ServiceCollectionExtensions.AddInfrastructureLayer] {services};{configuration} OK");
             return services;

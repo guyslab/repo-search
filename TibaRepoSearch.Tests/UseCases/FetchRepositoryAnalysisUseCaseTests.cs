@@ -10,7 +10,7 @@ public class FetchRepositoryAnalysisUseCaseTests
     [InlineData(2000, 0, 10, 10, 80)] // Max stars, very recent, equal issues/forks
     public void CalculateHealthScore_ReturnsExpectedScore(int stars, int activityDays, int openIssues, int forks, decimal expected)
     {
-        var uut = new FetchRepositoryAnalysisUseCase(null, null);
+        var uut = new FetchRepositoryAnalysisUseCase(null!, null!);
         var result = uut.CalculateHealthScore(stars, activityDays, openIssues, forks);
 
         Assert.Equal(expected, result, 1);
@@ -19,7 +19,7 @@ public class FetchRepositoryAnalysisUseCaseTests
     [Fact]
     public void CalculateHealthScore_ReturnsMaximum100()
     {
-        var uut = new FetchRepositoryAnalysisUseCase(null, null);
+        var uut = new FetchRepositoryAnalysisUseCase(null!, null!);
         var result = uut.CalculateHealthScore(10000, 0, 0, 1000);
 
         Assert.True(result <= 100);
@@ -28,7 +28,7 @@ public class FetchRepositoryAnalysisUseCaseTests
     [Fact]
     public void CalculateHealthScore_ReturnsMinimum0()
     {
-        var uut = new FetchRepositoryAnalysisUseCase(null, null);
+        var uut = new FetchRepositoryAnalysisUseCase(null!, null!);
         var result = uut.CalculateHealthScore(0, 1000, 1000, 0);
 
         Assert.True(result >= 0);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using TibaRepoSearch;
 
 var host = Host.CreateDefaultBuilder(args)
@@ -12,7 +13,7 @@ var host = Host.CreateDefaultBuilder(args)
         var analysisReadyQueue = context.Configuration["RabbitMQ:AnalysisReadyQueue"] ?? "analysis.ready";
         
         services.AddSingleton<IEventPublisher<RepositoryAnalysisReadyMessage>>(provider =>
-            new RabbitMQEventPublisher<RepositoryAnalysisReadyMessage>(rabbitMqHost, analysisReadyQueue, rabbitMqUser, rabbitMqPassword));
+            new RabbitMQEventPublisher<RepositoryAnalysisReadyMessage>(rabbitMqHost, analysisReadyQueue, provider.GetRequiredService<ILogger<RabbitMQEventPublisher<RepositoryAnalysisReadyMessage>>>(), rabbitMqUser, rabbitMqPassword));
         services.AddSingleton<IFetchRepositoryAnalysisUseCase, FetchRepositoryAnalysisUseCase>();
         services.AddSingleton<IAddOrUpdateFavoriteRepositoryAnalysisCommandFactory, AddOrUpdateFavoriteRepositoryAnalysisCommandFactory>();
         services.AddSingleton<IRepositoryFavoritedEventHandler, RepositoryFavoritedEventHandler>();
