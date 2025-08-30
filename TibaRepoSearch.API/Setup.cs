@@ -58,6 +58,11 @@ public static class ServiceCollectionExtensions
                 provider.GetRequiredService<IConnectionMultiplexer>().GetDatabase());
             services.AddSingleton<ICacheThrough, RedisCacheThrough>();
             
+            var rabbitMQHost = configuration["RabbitMQ:Host"] ?? "localhost";
+            var repoFavoritedQueue = configuration["RabbitMQ:RepoFavoritedQueue"] ?? "repo.favorited";
+            services.AddSingleton<IEventPublisher<RepositoryFavoritedMessage>>(provider =>
+                new RabbitMQEventPublisher<RepositoryFavoritedMessage>(rabbitMQHost, repoFavoritedQueue));
+            
             Console.WriteLine($"[ServiceCollectionExtensions.AddInfrastructureLayer] {services};{configuration} OK");
             return services;
         }
