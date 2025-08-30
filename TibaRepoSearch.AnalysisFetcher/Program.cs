@@ -13,7 +13,9 @@ var host = Host.CreateDefaultBuilder(args)
         
         services.AddSingleton<IEventPublisher<RepositoryAnalysisReadyMessage>>(provider =>
             new RabbitMQEventPublisher<RepositoryAnalysisReadyMessage>(rabbitMqHost, analysisReadyQueue, rabbitMqUser, rabbitMqPassword));
-        services.AddSingleton<IRepositoryFavoritedEventHandler, MockRepositoryFavoritedEventHandler>();
+        services.AddSingleton<IFetchRepositoryAnalysisUseCase, FetchRepositoryAnalysisUseCase>();
+        services.AddSingleton<IAddOrUpdateFavoriteRepositoryAnalysisCommandFactory, AddOrUpdateFavoriteRepositoryAnalysisCommandFactory>();
+        services.AddSingleton<IRepositoryFavoritedEventHandler, RepositoryFavoritedEventHandler>();
         services.AddSingleton<MessageReceiver>(provider => 
             new MessageReceiver(
                 provider.GetRequiredService<IRepositoryFavoritedEventHandler>(),

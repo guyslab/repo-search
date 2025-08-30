@@ -17,6 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TibaRepoSearch.Contract\TibaRepoSearch.Contract.csproj" />
     <ProjectReference Include="..\TibaRepoSearch.RabbitMQ\TibaRepoSearch.RabbitMQ.csproj" />
+    <ProjectReference Include="..\TibaRepoSearch.BL\TibaRepoSearch.BL.csproj" />
+    <ProjectReference Include="..\TibaRepoSearch.Data\TibaRepoSearch.Data.csproj" />
   </ItemGroup>
 
 </Project>

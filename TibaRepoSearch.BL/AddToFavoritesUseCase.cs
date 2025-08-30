@@ -23,7 +23,7 @@ public class AddToFavoritesUseCase : IAddToFavoritesUseCase
             var repository = new Repository(request.Name, request.Owner, request.Stars, request.UpdatedAt, string.Empty, request.RepoId);
             var command = _commandFactory.Create(userId, repository);
             await command.ExecuteAsync();
-            await _eventPublisher.PublishAsync(new RepositoryFavoritedMessage(request.RepoId));
+            await _eventPublisher.PublishAsync(new RepositoryFavoritedMessage(request.RepoId, userId));
             _logger.LogTrace("[AddToFavoritesUseCase.AddAsync] {request};{userId} OK", request, userId);
         }
         catch (Exception ex)
