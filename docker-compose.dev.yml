@@ -48,6 +48,10 @@ services:
       context: .
       dockerfile: TibaRepoSearch.AnalysisFetcher/Dockerfile
     environment:
+      - Database__Host=postgres
+      - Database__Name=tibarepodb
+      - Database__User=tibauser
+      - Database__Password=tibapass
       - RabbitMQ__Host=rabbitmq
       - RabbitMQ__UserName=admin
       - RabbitMQ__Password=admin
@@ -55,6 +59,7 @@ services:
       - RabbitMQ__AnalysisReadyQueue=analysis.ready
       - Logging__LogLevel__Default=Trace
     depends_on:
+      - postgres
       - rabbitmq
 
   api:
