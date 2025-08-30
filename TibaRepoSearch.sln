@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TibaRepoSearch.Tests", "Tib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TibaRepoSearch.AnalysisFetcher", "TibaRepoSearch.AnalysisFetcher\TibaRepoSearch.AnalysisFetcher.csproj", "{F394C869-3561-B312-35B7-C756C2DB391E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TibaRepoSearch.RabbitMQ", "TibaRepoSearch.RabbitMQ\TibaRepoSearch.RabbitMQ.csproj", "{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{F394C869-3561-B312-35B7-C756C2DB391E}.Release|x64.Build.0 = Release|Any CPU
 		{F394C869-3561-B312-35B7-C756C2DB391E}.Release|x86.ActiveCfg = Release|Any CPU
 		{F394C869-3561-B312-35B7-C756C2DB391E}.Release|x86.Build.0 = Release|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Debug|x64.Build.0 = Debug|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Debug|x86.Build.0 = Debug|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Release|x64.ActiveCfg = Release|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Release|x64.Build.0 = Release|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{8852AF0F-0F60-615F-7BFF-7FD79746A5C0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

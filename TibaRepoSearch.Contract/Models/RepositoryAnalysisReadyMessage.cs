@@ -11,5 +11,5 @@ public record RepositoryAnalysisReadyMessage(
     int StarsSnapshot,
     int ActivityDays,
     string DefaultBranch,
-    int HealthScore
+    decimal HealthScore
 );

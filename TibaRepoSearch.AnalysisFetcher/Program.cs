@@ -7,7 +7,10 @@ var host = Host.CreateDefaultBuilder(args)
     {
         var rabbitMqHost = context.Configuration["RabbitMQ:Host"] ?? "localhost";
         var repoFavoritedQueue = context.Configuration["RabbitMQ:RepoFavoritedQueue"] ?? "repo.favorited";
+        var analysisReadyQueue = context.Configuration["RabbitMQ:AnalysisReadyQueue"] ?? "analysis.ready";
         
+        services.AddSingleton<IEventPublisher<RepositoryAnalysisReadyMessage>>(provider =>
+            new RabbitMQEventPublisher<RepositoryAnalysisReadyMessage>(rabbitMqHost, analysisReadyQueue));
         services.AddSingleton<IRepositoryFavoritedEventHandler, MockRepositoryFavoritedEventHandler>();
         services.AddSingleton<MessageReceiver>(provider => 
             new MessageReceiver(
