@@ -14,7 +14,7 @@ public class ListFavoriteRepositoryWithAnalysisCommand : IListFavoriteRepository
         _userId = userId;
         _contextFactory = contextFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommand..ctor] {userId};{contextFactory} OK", DateTime.UtcNow.ToString("O"), userId, contextFactory);
+        _logger.LogTrace("[ListFavoriteRepositoryWithAnalysisCommand..ctor] {userId};{contextFactory} OK", userId, contextFactory);
     }
 
     public async Task<IEnumerable<IFavoriteRepositoryData>> ExecuteAsync()
@@ -26,12 +26,12 @@ public class ListFavoriteRepositoryWithAnalysisCommand : IListFavoriteRepository
                 .Include(f => f.Analysis)
                 .Where(f => f.UserId == _userId)
                 .ToListAsync();
-            _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  OK", DateTime.UtcNow.ToString("O"));
+            _logger.LogTrace("[ListFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  OK");
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  {Message}", DateTime.UtcNow.ToString("O"), ex.Message);
+            _logger.LogTrace("[ListFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  {Message}", ex.Message);
             throw;
         }
     }

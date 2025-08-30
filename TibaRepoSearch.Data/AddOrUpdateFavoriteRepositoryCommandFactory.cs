@@ -14,7 +14,7 @@ public class AddOrUpdateFavoriteRepositoryCommandFactory : IAddOrUpdateFavoriteR
         _contextFactory = contextFactory;
         _logger = logger;
         _commandLogger = commandLogger;
-        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommandFactory..ctor] {contextFactory} OK", DateTime.UtcNow.ToString("O"), contextFactory);
+        _logger.LogTrace("[AddOrUpdateFavoriteRepositoryCommandFactory..ctor] {contextFactory} OK", contextFactory);
     }
 
     public IAddOrUpdateFavoriteRepositoryCommand Create(string userId, Repository repository)
@@ -32,12 +32,12 @@ public class AddOrUpdateFavoriteRepositoryCommandFactory : IAddOrUpdateFavoriteR
             };
 
             var result = new AddOrUpdateFavoriteRepositoryCommand(data, _contextFactory, _commandLogger);
-            _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommandFactory.Create] {userId};{repository} OK", DateTime.UtcNow.ToString("O"), userId, repository);
+            _logger.LogTrace("[AddOrUpdateFavoriteRepositoryCommandFactory.Create] {userId};{repository} OK", userId, repository);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommandFactory.Create] {userId};{repository} {Message}", DateTime.UtcNow.ToString("O"), userId, repository, ex.Message);
+            _logger.LogTrace("[AddOrUpdateFavoriteRepositoryCommandFactory.Create] {userId};{repository} {Message}", userId, repository, ex.Message);
             throw;
         }
     }

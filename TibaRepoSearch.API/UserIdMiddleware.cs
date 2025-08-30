@@ -11,7 +11,7 @@ public class UserIdMiddleware
     {
         _next = next;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [UserIdMiddleware..ctor] {next} OK", DateTime.UtcNow.ToString("O"), next);
+        _logger.LogTrace("[UserIdMiddleware..ctor] {next} OK", next);
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -20,11 +20,11 @@ public class UserIdMiddleware
         {
             context.Items["UserId"] = "user123";
             await _next(context);
-            _logger.LogTrace("[{timestamp}] [UserIdMiddleware.InvokeAsync] {context} OK", DateTime.UtcNow.ToString("O"), context);
+            _logger.LogTrace("[UserIdMiddleware.InvokeAsync] {context} OK", context);
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [UserIdMiddleware.InvokeAsync] {context} {Message}", DateTime.UtcNow.ToString("O"), context, ex.Message);
+            _logger.LogTrace("[UserIdMiddleware.InvokeAsync] {context} {Message}", context, ex.Message);
             throw;
         }
     }

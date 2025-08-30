@@ -13,7 +13,7 @@ public class RedisCacheThrough : ICacheThrough
     {
         _database = database;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [RedisCacheThrough..ctor] {database} OK", DateTime.UtcNow.ToString("O"), database);
+        _logger.LogTrace("[RedisCacheThrough..ctor] {database} OK", database);
     }
 
     public async Task<TResult> Get<TResult>(string key, Func<string, Task<TResult>> onMiss, TimeSpan ttl)
@@ -25,7 +25,7 @@ public class RedisCacheThrough : ICacheThrough
             if (cachedValue.HasValue)
             {
                 var result = JsonSerializer.Deserialize<TResult>(cachedValue!)!;
-                _logger.LogTrace("[{timestamp}] [RedisCacheThrough.Get] {key};{onMiss};{ttl} OK", DateTime.UtcNow.ToString("O"), key, onMiss, ttl);
+                _logger.LogTrace("[RedisCacheThrough.Get] {key};{onMiss};{ttl} OK", key, onMiss, ttl);
                 return result;
             }
 
@@ -33,12 +33,12 @@ public class RedisCacheThrough : ICacheThrough
             var serializedResult = JsonSerializer.Serialize(missResult);
             await _database.StringSetAsync(key, serializedResult, ttl);
             
-            _logger.LogTrace("[{timestamp}] [RedisCacheThrough.Get] {key};{onMiss};{ttl} OK", DateTime.UtcNow.ToString("O"), key, onMiss, ttl);
+            _logger.LogTrace("[RedisCacheThrough.Get] {key};{onMiss};{ttl} OK", key, onMiss, ttl);
             return missResult;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [RedisCacheThrough.Get] {key};{onMiss};{ttl} {Message}", DateTime.UtcNow.ToString("O"), key, onMiss, ttl, ex.Message);
+            _logger.LogTrace("[RedisCacheThrough.Get] {key};{onMiss};{ttl} {Message}", key, onMiss, ttl, ex.Message);
             throw;
         }
     }

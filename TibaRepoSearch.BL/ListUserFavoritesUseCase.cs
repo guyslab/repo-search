@@ -11,7 +11,7 @@ public class ListUserFavoritesUseCase : IListUserFavoritesUseCase
     {
         _commandFactory = commandFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [ListUserFavoritesUseCase..ctor] {commandFactory} OK", DateTime.UtcNow.ToString("O"), commandFactory);
+        _logger.LogTrace("[ListUserFavoritesUseCase..ctor] {commandFactory} OK", commandFactory);
     }
 
     public async Task<IEnumerable<FavoriteRepository>> ListAsync(string userId)
@@ -28,12 +28,12 @@ public class ListUserFavoritesUseCase : IListUserFavoritesUseCase
                 string.Empty, 
                 f.RepoId, 
                 MapAnalysis(f.Analysis)));
-            _logger.LogTrace("[{timestamp}] [ListUserFavoritesUseCase.ListAsync] {userId} OK", DateTime.UtcNow.ToString("O"), userId);
+            _logger.LogTrace("[ListUserFavoritesUseCase.ListAsync] {userId} OK", userId);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [ListUserFavoritesUseCase.ListAsync] {userId} {Message}", DateTime.UtcNow.ToString("O"), userId, ex.Message);
+            _logger.LogTrace("[ListUserFavoritesUseCase.ListAsync] {userId} {Message}", userId, ex.Message);
             throw;
         }
     }
@@ -55,12 +55,12 @@ public class ListUserFavoritesUseCase : IListUserFavoritesUseCase
                 analysis.ActivityDays ?? 0,
                 analysis.DefaultBranch ?? string.Empty,
                 analysis.HealthScore ?? 0);
-            _logger.LogTrace("[{timestamp}] [ListUserFavoritesUseCase.MapAnalysis] {analysis} OK", DateTime.UtcNow.ToString("O"), analysis);
+            _logger.LogTrace("[ListUserFavoritesUseCase.MapAnalysis] {analysis} OK", analysis);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [ListUserFavoritesUseCase.MapAnalysis] {analysis} {Message}", DateTime.UtcNow.ToString("O"), analysis, ex.Message);
+            _logger.LogTrace("[ListUserFavoritesUseCase.MapAnalysis] {analysis} {Message}", analysis, ex.Message);
             throw;
         }
     }

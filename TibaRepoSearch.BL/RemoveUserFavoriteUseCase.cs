@@ -11,7 +11,7 @@ public class RemoveUserFavoriteUseCase : IRemoveUserFavoriteUseCase
     {
         _commandFactory = commandFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [RemoveUserFavoriteUseCase..ctor] {commandFactory} OK", DateTime.UtcNow.ToString("O"), commandFactory);
+        _logger.LogTrace("[RemoveUserFavoriteUseCase..ctor] {commandFactory} OK", commandFactory);
     }
 
     public async Task RemoveAsync(string repoId, string userId)
@@ -20,11 +20,11 @@ public class RemoveUserFavoriteUseCase : IRemoveUserFavoriteUseCase
         {
             var command = _commandFactory.Create(repoId, userId);
             await command.ExecuteAsync();
-            _logger.LogTrace("[{timestamp}] [RemoveUserFavoriteUseCase.RemoveAsync] {repoId};{userId} OK", DateTime.UtcNow.ToString("O"), repoId, userId);
+            _logger.LogTrace("[RemoveUserFavoriteUseCase.RemoveAsync] {repoId};{userId} OK", repoId, userId);
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [RemoveUserFavoriteUseCase.RemoveAsync] {repoId};{userId} {Message}", DateTime.UtcNow.ToString("O"), repoId, userId, ex.Message);
+            _logger.LogTrace("[RemoveUserFavoriteUseCase.RemoveAsync] {repoId};{userId} {Message}", repoId, userId, ex.Message);
             throw;
         }
     }

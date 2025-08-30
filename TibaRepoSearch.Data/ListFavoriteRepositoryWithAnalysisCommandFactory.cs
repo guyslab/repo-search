@@ -14,7 +14,7 @@ public class ListFavoriteRepositoryWithAnalysisCommandFactory : IListFavoriteRep
         _contextFactory = contextFactory;
         _logger = logger;
         _commandLogger = commandLogger;
-        _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommandFactory..ctor] {contextFactory} OK", DateTime.UtcNow.ToString("O"), contextFactory);
+        _logger.LogTrace("[ListFavoriteRepositoryWithAnalysisCommandFactory..ctor] {contextFactory} OK", contextFactory);
     }
 
     public IListFavoriteRepositoryWithAnalysisCommand Create(string userId)
@@ -22,12 +22,12 @@ public class ListFavoriteRepositoryWithAnalysisCommandFactory : IListFavoriteRep
         try
         {
             var result = new ListFavoriteRepositoryWithAnalysisCommand(userId, _contextFactory, _commandLogger);
-            _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommandFactory.Create] {userId} OK", DateTime.UtcNow.ToString("O"), userId);
+            _logger.LogTrace("[ListFavoriteRepositoryWithAnalysisCommandFactory.Create] {userId} OK", userId);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [ListFavoriteRepositoryWithAnalysisCommandFactory.Create] {userId} {Message}", DateTime.UtcNow.ToString("O"), userId, ex.Message);
+            _logger.LogTrace("[ListFavoriteRepositoryWithAnalysisCommandFactory.Create] {userId} {Message}", userId, ex.Message);
             throw;
         }
     }

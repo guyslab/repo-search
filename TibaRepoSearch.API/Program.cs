@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 
 namespace TibaRepoSearch;
 
@@ -6,6 +7,14 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSimpleConsole(options =>
+        {
+            options.TimestampFormat = "[yyyy-MM-dd HH:mm:ss.fff] ";
+            options.IncludeScopes = false;
+        });
+        builder.Logging.SetMinimumLevel(LogLevel.Trace);
         
         var port = Environment.GetEnvironmentVariable("API_PORT") ?? "5000";
         builder.WebHost.UseUrls($"http://*:{port}");

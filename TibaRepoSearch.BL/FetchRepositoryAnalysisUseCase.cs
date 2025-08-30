@@ -15,12 +15,12 @@ public class FetchRepositoryAnalysisUseCase : IFetchRepositoryAnalysisUseCase
         try
         {
             var result = Task.FromResult<Analysis?>(null);
-            _logger.LogTrace("[{timestamp}] [FetchRepositoryAnalysisUseCase.FetchAnalysisAsync] {repoId} OK", DateTime.UtcNow.ToString("O"), repoId);
+            _logger.LogTrace("[FetchRepositoryAnalysisUseCase.FetchAnalysisAsync]  {repoId} OK", repoId);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [FetchRepositoryAnalysisUseCase.FetchAnalysisAsync] {repoId} {Message}", DateTime.UtcNow.ToString("O"), repoId, ex.Message);
+            _logger.LogTrace("[FetchRepositoryAnalysisUseCase.FetchAnalysisAsync] {repoId} {Message}", repoId, ex.Message);
             throw;
         }
     }

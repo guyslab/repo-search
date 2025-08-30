@@ -16,7 +16,7 @@ public class GitHubClient : IGithubClient
         _httpClient = httpClient;
         _options = options.Value;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [GitHubClient..ctor] {httpClient};{options} OK", DateTime.UtcNow.ToString("O"), httpClient, options);
+        _logger.LogTrace("[GitHubClient..ctor] {httpClient};{options} OK", httpClient, options);
     }
 
     public async Task<GitHubSearchResponse> SearchRepositoriesAsync(string query)
@@ -31,12 +31,12 @@ public class GitHubClient : IGithubClient
                 await _httpClient.GetFromJsonAsync<GitHubSearchResponse>($"search/repositories?q={Uri.EscapeDataString(query)}"));
             
             var result = response ?? new GitHubSearchResponse(0, false, Array.Empty<GitHubRepository>());
-            _logger.LogTrace("[{timestamp}] [GitHubClient.SearchRepositoriesAsync] {query} OK", DateTime.UtcNow.ToString("O"), query);
+            _logger.LogTrace("[GitHubClient.SearchRepositoriesAsync] {query} OK", query);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [GitHubClient.SearchRepositoriesAsync] {query} {Message}", DateTime.UtcNow.ToString("O"), query, ex.Message);
+            _logger.LogTrace("[GitHubClient.SearchRepositoriesAsync] {query} {Message}", query, ex.Message);
             throw;
         }
     }

@@ -11,7 +11,7 @@ public class RequestContext : IRequestContext
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [RequestContext..ctor] {httpContextAccessor} OK", DateTime.UtcNow.ToString("O"), httpContextAccessor);
+        _logger.LogTrace("[RequestContext..ctor] {httpContextAccessor} OK", httpContextAccessor);
     }
 
     public string? GetUserId()
@@ -19,12 +19,12 @@ public class RequestContext : IRequestContext
         try
         {
             var result = _httpContextAccessor.HttpContext?.Items["UserId"]?.ToString();
-            _logger.LogTrace("[{timestamp}] [RequestContext.GetUserId]  OK", DateTime.UtcNow.ToString("O"));
+            _logger.LogTrace("[RequestContext.GetUserId]  OK");
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [RequestContext.GetUserId]  {Message}", DateTime.UtcNow.ToString("O"), ex.Message);
+            _logger.LogTrace("[RequestContext.GetUserId]  {Message}", ex.Message);
             throw;
         }
     }

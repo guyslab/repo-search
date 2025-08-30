@@ -16,7 +16,7 @@ public class RepositorySearchUseCase : IRepositorySearchUseCase
         _cache = cache;
         _options = options.Value;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [RepositorySearchUseCase..ctor] {githubClient};{cache};{options} OK", DateTime.UtcNow.ToString("O"), githubClient, cache, options);
+        _logger.LogTrace("[RepositorySearchUseCase..ctor] {githubClient};{cache};{options} OK", githubClient, cache, options);
     }
 
     public async Task<IEnumerable<Repository>> SearchAsync(string query, int page = 1, int pageSize = 10)
@@ -35,12 +35,12 @@ public class RepositorySearchUseCase : IRepositorySearchUseCase
                     repo.Id.ToString()))
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
-            _logger.LogTrace("[{timestamp}] [RepositorySearchUseCase.SearchAsync] {query};{page};{pageSize} OK", DateTime.UtcNow.ToString("O"), query, page, pageSize);
+            _logger.LogTrace("[RepositorySearchUseCase.SearchAsync] {query};{page};{pageSize} OK", query, page, pageSize);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [RepositorySearchUseCase.SearchAsync] {query};{page};{pageSize} {Message}", DateTime.UtcNow.ToString("O"), query, page, pageSize, ex.Message);
+            _logger.LogTrace("[RepositorySearchUseCase.SearchAsync] {query};{page};{pageSize} {Message}", query, page, pageSize, ex.Message);
             throw;
         }
     }

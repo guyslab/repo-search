@@ -14,7 +14,7 @@ public class SearchController : ControllerBase
     {
         _useCase = useCase;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [SearchController..ctor] {useCase} OK", DateTime.UtcNow.ToString("O"), useCase);
+        _logger.LogTrace("[SearchController..ctor] {useCase} OK", useCase);
     }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Repository>>> Get([FromQuery] string q, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
@@ -25,12 +25,12 @@ public class SearchController : ControllerBase
                 return BadRequest("Query parameter 'q' is required");
 
             var results = await _useCase.SearchAsync(q, page, pageSize);
-            _logger.LogTrace("[{timestamp}] [SearchController.Get] {q};{page};{pageSize} OK", DateTime.UtcNow.ToString("O"), q, page, pageSize);
+            _logger.LogTrace("[SearchController.Get] {q};{page};{pageSize} OK", q, page, pageSize);
             return Ok(results);
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [SearchController.Get] {q};{page};{pageSize} {Message}", DateTime.UtcNow.ToString("O"), q, page, pageSize, ex.Message);
+            _logger.LogTrace("[SearchController.Get] {q};{page};{pageSize} {Message}", q, page, pageSize, ex.Message);
             throw;
         }
     }

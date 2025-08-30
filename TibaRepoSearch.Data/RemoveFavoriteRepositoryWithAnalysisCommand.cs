@@ -16,7 +16,7 @@ public class RemoveFavoriteRepositoryWithAnalysisCommand : IRemoveFavoriteReposi
         _userId = userId;
         _contextFactory = contextFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [RemoveFavoriteRepositoryWithAnalysisCommand..ctor] {repoId};{userId};{contextFactory} OK", DateTime.UtcNow.ToString("O"), repoId, userId, contextFactory);
+        _logger.LogTrace("[RemoveFavoriteRepositoryWithAnalysisCommand..ctor] {repoId};{userId};{contextFactory} OK", repoId, userId, contextFactory);
     }
 
     public async Task ExecuteAsync()
@@ -38,11 +38,11 @@ public class RemoveFavoriteRepositoryWithAnalysisCommand : IRemoveFavoriteReposi
 
                 await context.SaveChangesAsync();
             }
-            _logger.LogTrace("[{timestamp}] [RemoveFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  OK", DateTime.UtcNow.ToString("O"));
+            _logger.LogTrace("[RemoveFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  OK");
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [RemoveFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  {Message}", DateTime.UtcNow.ToString("O"), ex.Message);
+            _logger.LogTrace("[RemoveFavoriteRepositoryWithAnalysisCommand.ExecuteAsync]  {Message}", ex.Message);
             throw;
         }
     }

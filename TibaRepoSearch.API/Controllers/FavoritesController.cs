@@ -21,7 +21,7 @@ public class FavoritesController : ControllerBase
         _removeUserFavoriteUseCase = removeUserFavoriteUseCase;
         _requestContext = requestContext;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [FavoritesController..ctor] {addToFavoritesUseCase};{listUserFavoritesUseCase};{removeUserFavoriteUseCase};{requestContext} OK", DateTime.UtcNow.ToString("O"), addToFavoritesUseCase, listUserFavoritesUseCase, removeUserFavoriteUseCase, requestContext);
+        _logger.LogTrace("[FavoritesController..ctor] {addToFavoritesUseCase};{listUserFavoritesUseCase};{removeUserFavoriteUseCase};{requestContext} OK", addToFavoritesUseCase, listUserFavoritesUseCase, removeUserFavoriteUseCase, requestContext);
     }
 
     [HttpGet]
@@ -30,12 +30,12 @@ public class FavoritesController : ControllerBase
         try
         {
             var results = await _listUserFavoritesUseCase.ListAsync(_requestContext.GetUserId()!);
-            _logger.LogTrace("[{timestamp}] [FavoritesController.Get]  OK", DateTime.UtcNow.ToString("O"));
+            _logger.LogTrace("[FavoritesController.Get]  OK");
             return Ok(results);
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [FavoritesController.Get]  {Message}", DateTime.UtcNow.ToString("O"), ex.Message);
+            _logger.LogTrace("[FavoritesController.Get]  {Message}", ex.Message);
             throw;
         }
     }
@@ -50,12 +50,12 @@ public class FavoritesController : ControllerBase
             var favorite = new FavoriteRepository(request.Name, request.Owner, request.Stars, request.UpdatedAt, "", request.RepoId);
 
             await _addToFavoritesUseCase.AddAsync(request, _requestContext.GetUserId()!);
-            _logger.LogTrace("[{timestamp}] [FavoritesController.Post] {request} OK", DateTime.UtcNow.ToString("O"), request);
+            _logger.LogTrace("[FavoritesController.Post] {request} OK", request);
             return Accepted();
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [FavoritesController.Post] {request} {Message}", DateTime.UtcNow.ToString("O"), request, ex.Message);
+            _logger.LogTrace("[FavoritesController.Post] {request} {Message}", request, ex.Message);
             throw;
         }
     }
@@ -66,12 +66,12 @@ public class FavoritesController : ControllerBase
         try
         {
             await _removeUserFavoriteUseCase.RemoveAsync(repoId, _requestContext.GetUserId()!);
-            _logger.LogTrace("[{timestamp}] [FavoritesController.Delete] {repoId} OK", DateTime.UtcNow.ToString("O"), repoId);
+            _logger.LogTrace("[FavoritesController.Delete] {repoId} OK", repoId);
             return NoContent();
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [FavoritesController.Delete] {repoId} {Message}", DateTime.UtcNow.ToString("O"), repoId, ex.Message);
+            _logger.LogTrace("[FavoritesController.Delete] {repoId} {Message}", repoId, ex.Message);
             throw;
         }
     }

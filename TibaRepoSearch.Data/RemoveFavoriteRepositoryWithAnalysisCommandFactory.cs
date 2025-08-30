@@ -14,7 +14,7 @@ public class RemoveFavoriteRepositoryWithAnalysisCommandFactory : IRemoveFavorit
         _contextFactory = contextFactory;
         _logger = logger;
         _commandLogger = commandLogger;
-        _logger.LogTrace("[{timestamp}] [RemoveFavoriteRepositoryWithAnalysisCommandFactory..ctor] {contextFactory} OK", DateTime.UtcNow.ToString("O"), contextFactory);
+        _logger.LogTrace("[RemoveFavoriteRepositoryWithAnalysisCommandFactory..ctor] {contextFactory} OK", contextFactory);
     }
 
     public IRemoveFavoriteRepositoryWithAnalysisCommand Create(string repoId, string userId)
@@ -22,12 +22,12 @@ public class RemoveFavoriteRepositoryWithAnalysisCommandFactory : IRemoveFavorit
         try
         {
             var result = new RemoveFavoriteRepositoryWithAnalysisCommand(repoId, userId, _contextFactory, _commandLogger);
-            _logger.LogTrace("[{timestamp}] [RemoveFavoriteRepositoryWithAnalysisCommandFactory.Create] {repoId};{userId} OK", DateTime.UtcNow.ToString("O"), repoId, userId);
+            _logger.LogTrace("[RemoveFavoriteRepositoryWithAnalysisCommandFactory.Create] {repoId};{userId} OK", repoId, userId);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [RemoveFavoriteRepositoryWithAnalysisCommandFactory.Create] {repoId};{userId} {Message}", DateTime.UtcNow.ToString("O"), repoId, userId, ex.Message);
+            _logger.LogTrace("[RemoveFavoriteRepositoryWithAnalysisCommandFactory.Create] {repoId};{userId} {Message}", repoId, userId, ex.Message);
             throw;
         }
     }

@@ -14,7 +14,7 @@ public class AddOrUpdateFavoriteRepositoryCommand : IAddOrUpdateFavoriteReposito
         _data = data;
         _contextFactory = contextFactory;
         _logger = logger;
-        _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommand..ctor] {data};{contextFactory} OK", DateTime.UtcNow.ToString("O"), data, contextFactory);
+        _logger.LogTrace("[AddOrUpdateFavoriteRepositoryCommand..ctor] {data};{contextFactory} OK", data, contextFactory);
     }
 
     public async Task ExecuteAsync()
@@ -48,11 +48,11 @@ public class AddOrUpdateFavoriteRepositoryCommand : IAddOrUpdateFavoriteReposito
             }
 
             await context.SaveChangesAsync();
-            _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommand.ExecuteAsync]  OK", DateTime.UtcNow.ToString("O"));
+            _logger.LogTrace("[AddOrUpdateFavoriteRepositoryCommand.ExecuteAsync]  OK");
         }
         catch (Exception ex)
         {
-            _logger.LogTrace("[{timestamp}] [AddOrUpdateFavoriteRepositoryCommand.ExecuteAsync]  {Message}", DateTime.UtcNow.ToString("O"), ex.Message);
+            _logger.LogTrace("[AddOrUpdateFavoriteRepositoryCommand.ExecuteAsync]  {Message}", ex.Message);
             throw;
         }
     }
