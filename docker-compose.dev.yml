@@ -25,6 +25,11 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   migration:
     image: mcr.microsoft.com/dotnet/sdk:8.0
@@ -59,8 +64,10 @@ services:
       - RabbitMQ__AnalysisReadyQueue=analysis.ready
       - Logging__LogLevel__Default=Trace
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   api:
     build:
@@ -81,10 +88,14 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - postgres
-      - redis
-      - rabbitmq
-      - migration
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
 
 volumes:
   postgres_data:
