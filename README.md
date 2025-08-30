@@ -12,7 +12,7 @@ The goal of this project is to create a web application that allows users to sea
 	3. Favorited repositories are suggested and described as joined tables of the repository and its metadata. However, since the metadata computation causes an eventual update for the favorite repository DTO, it is better to persist it as a document with optional analysis property. While the repo-metadata separation is reasonable in terms of relational database, there is actually no advantage is using a relational database based the current requirements. This is neither correct not agile. Evetually, the client retreives a repository document with optional metadata (analysis). Joining of this data online would be a waste of resources, as that full document is already captured on the offline job.
 	4. The assignment suggests that a repository analysis is related to favorite ID, however the analysis is indipendent of whether or which user favorited it. Plus, if two user favoriated the same repository they could use the same analysis. Disconnecting the analysis from favorites will cause more manual management for unused analyses, but will positively affect on separation of concerns.
 
-## Design Decisions
+## Tradeoffs & Next Steps
 	1. Command pattern for use cases, for easier business logic invocation
 	2. Contract project/package for interfaces and models
 	3. Use cases are implemented in a single BL package, but are separated in a way that enables package easy package splitting.
@@ -26,6 +26,7 @@ The goal of this project is to create a web application that allows users to sea
 	11. The client-API connection is currently insecure. Again, a proper API gateway setup shall reslove this.
 	12. The API emits trace logs to standard output using the Microsoft Logger. This enables more control over tracability, such as using telemetry standards, etc.
 	13. Docker compose includes a DB migration step
+	14. UI Frontend and rate limiting are not implemented due to time constraints.
 
 
 ## Enviroment Setup

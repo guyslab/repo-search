@@ -4,6 +4,16 @@ using Microsoft.Extensions.Logging;
 using TibaRepoSearch;
 
 var host = Host.CreateDefaultBuilder(args)
+    .ConfigureLogging(logging =>
+    {
+        logging.ClearProviders();
+        logging.AddSimpleConsole(options =>
+        {
+            options.TimestampFormat = "[yyyy-MM-dd HH:mm:ss.fff] ";
+            options.IncludeScopes = false;
+        });
+        logging.SetMinimumLevel(LogLevel.Trace);
+    })
     .ConfigureServices((context, services) =>
     {
         var rabbitMqHost = context.Configuration["RabbitMQ:Host"] ?? "localhost";
